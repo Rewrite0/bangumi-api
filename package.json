@@ -1,6 +1,7 @@
 {
   "name": "bangumi-api",
   "version": "1.0.0",
+  "license": "MIT",
   "type": "module",
   "description": "用typescript包装的Bangumi REST API.",
   "homepage": "https://github.com/Rewrite0/bangumi-api#readme",
