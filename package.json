@@ -1,6 +1,6 @@
 {
   "name": "bangumi-api-ts",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "license": "MIT",
   "type": "module",
   "description": "用typescript包装的Bangumi REST API.",
@@ -36,14 +36,10 @@
     "url": "https://github.com/Rewrite0/bangumi-api"
   },
   "scripts": {
-    "dev": "vite-node index.ts",
-    "build": "vite build",
-    "preview": "vite preview"
+    "build": "vite build"
   },
   "devDependencies": {
-    "typescript": "^4.9.3",
     "vite": "^4.1.0",
-    "vite-node": "^0.28.4",
     "vite-plugin-dts": "^1.7.2"
   },
   "dependencies": {
