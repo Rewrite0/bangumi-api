@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ES5",
     "useDefineForClassFields": true,
-    "module": "Es6",
+    "module": "ES6",
     "lib": [
       "ES6",
       "DOM",
@@ -16,9 +16,12 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
   },
   "include": [
     "src"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }

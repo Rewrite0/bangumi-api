@@ -7,6 +7,9 @@ export default defineConfig({
     drop: ['console', 'debugger'],
   },
   build: {
+    rollupOptions: {
+      external: ['axios'],
+    },
     lib: {
       entry: './src/main.ts',
       name: 'bangumi-api',
