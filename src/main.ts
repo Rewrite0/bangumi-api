@@ -7,6 +7,11 @@ import type {
   PatchUserCollectionParams,
   GetUserCollectionEpisodesParams,
   PatchUserCollectionEpisodesParams,
+  SubjectType,
+  ImageType,
+  SubjectImageType,
+  UserAvatarType,
+  EpisodeCollectionType,
 } from './types';
 
 export * from './types';
@@ -50,7 +55,7 @@ export class BangumiApi {
    * 条目搜索
    * @param keywords 关键词
    * @param params 参数
-   * @param params.type 条目类型, 参考 enum SubjectType - 1, 2, 3, 4, 6
+   * @param params.type 条目类型 - 1, 2, 3, 4, 6
    * @param params.responseGroup 返回数据大小, small, medium, large, 默认 small
    * @param params.start 开始条数
    * @param params.max_resulte 每页最多条数, 最大25
@@ -65,10 +70,9 @@ export class BangumiApi {
   /**
    * 实验性条目搜索
    * @param keyword 关键词
-   * @param params 参数
-   * @param params.offset offset
-   * @param params.limit limit
-   * @param params.filter filter
+   * @param params 参数 sort, filter
+   * @param params.sort 排序 'match' | 'heat' | 'rank' | 'score'
+   * @param params.filter type, tag, air_date, rating, rank, nsfw
    */
   experimentalSearch(keyword: string, params?: ExperimentalSearchParams) {
     return this.axios.post('/v0/search/subjects', {
@@ -88,9 +92,9 @@ export class BangumiApi {
   /**
    * 获取条目图片
    * @param id 条目id
-   * @param type 图片类型 参考 enum SubjectImageType 默认 'small'
+   * @param type 图片类型 - 默认 'small'
    */
-  getSubjectImage(id: number, type: string = 'small') {
+  getSubjectImage(id: number, type: SubjectImageType = 'small') {
     return this.axios.get(`/v0/subjects/${id}/image`, {
       params: {
         type,
@@ -126,7 +130,7 @@ export class BangumiApi {
    * get episodes
    * @param subject_id 条目id
    * @param params 参数
-   * @param params.type 参考 enum EpType - 0, 1, 2, 3, 4, 5, 6
+   * @param params.type 章节类型 - 0, 1, 2, 3, 4, 5, 6
    * @param params.limit limit default: 100
    * @param params.offset offset default: 0
    */
@@ -158,9 +162,9 @@ export class BangumiApi {
   /**
    * get character image
    * @param character_id 角色id
-   * @param type 参考 enum ImageType - small|grid|large|medium
+   * @param type 图片类型 - small|grid|large|medium
    */
-  getCharacterImage(character_id: number, type: string) {
+  getCharacterImage(character_id: number, type: ImageType) {
     return this.axios.get(`/v0/characters/${character_id}/image`, {
       params: {
         type,
@@ -195,9 +199,9 @@ export class BangumiApi {
   /**
    * get person image
    * @param person_id 人物id
-   * @param type 参考 enum ImageType - small|grid|large|medium
+   * @param type 图片类型 - small|grid|large|medium
    */
-  getPersonImage(person_id: number, type: string) {
+  getPersonImage(person_id: number, type: ImageType) {
     return this.axios.get(`/v0/persons/${person_id}/image`, {
       params: {
         type,
@@ -233,9 +237,9 @@ export class BangumiApi {
    * 获取用户头像
    * @description 获取用户头像，302 重定向至头像地址，设置了 username 之后无法使用 UID 查询。
    * @param username 用户名或UID, 设置了用户名之后无法使用 UID
-   * @param type 参考 enum UserAvatarType - small|large|medium
+   * @param type 用户头像类型 - small|large|medium
    */
-  getUserAvatar(username: string, type: string) {
+  getUserAvatar(username: string, type: UserAvatarType) {
     return this.axios.get(`/v0/users/${username}/avatar`, {
       params: {
         type,
@@ -254,8 +258,8 @@ export class BangumiApi {
    * 获取对应用户的收藏，查看私有收藏需要access token
    * @param username 用户名或UID, 设置了用户名之后无法使用 UID
    * @param params 参数
-   * @param params.subject_type 条目类型, 参考 enu SubjectType -  1, 2, 3, 4, 6
-   * @param params.type 收藏类型, 参考 enu CollectionType -  1, 2, 3, 4, 5
+   * @param params.subject_type 条目类型 -  1, 2, 3, 4, 6
+   * @param params.type 收藏类型 -  1, 2, 3, 4, 5
    * @param params.limit default 30
    * @param params.offset default 0
    */
@@ -269,7 +273,6 @@ export class BangumiApi {
    * 获取对应用户的单个收藏条目，查看私有收藏需要access token。
    * @param username 用户名或UID, 设置了用户名之后无法使用 UID
    * @param subject_id 条目id
-   * @returns
    */
   getUserCollectionsSubject(username: string, subject_id: number) {
     return this.axios.get(`/v0/users/${username}/collections/${subject_id}`);
@@ -281,13 +284,13 @@ export class BangumiApi {
    * PATCH 方法的所有请求体字段均可选
    * @param subject_id 条目id
    * @param params 参数
-   * @param params.type
-   * @param params.rate
-   * @param params.ep_status
-   * @param params.vol_status
-   * @param params.comment
-   * @param params.private
-   * @param params.tags
+   * @param params.type 条目收藏类型 1, 2, 3, 4, 5
+   * @param params.rate 评分，0 表示删除评分
+   * @param params.ep_status 只能用于修改书籍条目进度
+   * @param params.vol_status 只能用于修改书籍条目进度
+   * @param params.comment 评价
+   * @param params.private 仅自己可见
+   * @param params.tags 不传或者 null 都会被忽略，传 [] 则会删除所有 tag
    */
   patchUserCollectionSubject(subject_id: number, params?: PatchUserCollectionParams) {
     return this.axios.patch(`/v0/users/-/collections/${subject_id}`, params);
@@ -297,9 +300,9 @@ export class BangumiApi {
    * 获取指定收藏条目的章节信息
    * @param subject_id 条目id
    * @param params 参数
-   * @param params.episode_type 章节类型 不传则不按照章节进行筛选, 参考 enum EpType - 0, 1, 2, 3, 4, 5, 6
-   * @param params.offset offset
-   * @param params.limit limit
+   * @param params.episode_type 章节类型 不传则不按照章节进行筛选 - 0, 1, 2, 3, 4, 5, 6
+   * @param params.offset offset default: 0
+   * @param params.limit limit default: 100
    */
   getUserCollectionsSubjectEpisodes(
     subject_id: number,
@@ -315,6 +318,8 @@ export class BangumiApi {
    * @description 同时会重新计算条目的完成度, 暂时不能生成时间线
    * @param subject_id 条目id
    * @param params 参数
+   * @param params.episode_id 章节id数组
+   * @param params.type 0, 1, 2, 3
    */
   patchUserCollectionsSubjectEpisodes(
     subject_id: number,
@@ -334,10 +339,9 @@ export class BangumiApi {
   /**
    * 更新指定收藏章节信息
    * @param episode_id 章节id
-   * @param type
-   * @returns
+   * @param type 章节收藏类型
    */
-  putUserCollectionsEpisode(episode_id: number, type: number) {
+  putUserCollectionsEpisode(episode_id: number, type: EpisodeCollectionType) {
     return this.axios.put(`/v0/users/-/collections/-/episodes/${episode_id}`, {
       type,
     });
@@ -499,14 +503,14 @@ export class BangumiApi {
    * 获取目录中的条目
    * @param index_id 目录id
    * @param params 参数
-   * @param params.type 条目id 参考 enum SubjectType - 1, 2, 3, 4, 6
+   * @param params.type 条目类型 - 1, 2, 3, 4, 6
    * @param params.limit limit default 30
    * @param params.offset offset default 0
    */
   getIndicesSubject(
     index_id: number,
     params?: {
-      type?: number;
+      type?: SubjectType;
       limit?: number;
       offset?: number;
     }
@@ -521,8 +525,8 @@ export class BangumiApi {
    * @param index_id 目录id
    * @param subject_id 条目id
    * @param params 参数
-   * @param params.sort
-   * @param params.comment
+   * @param params.sort 排序条件，越小越靠前
+   * @param params.comment 评论
    */
   addIndicesSubject(
     index_id: number,
@@ -544,8 +548,8 @@ export class BangumiApi {
    * @param index_id 目录id
    * @param subject_id 条目id
    * @param params 参数
-   * @param params.sort
-   * @param params.comment
+   * @param params.sort 排序条件，越小越靠前
+   * @param params.comment 评论
    */
   putIndicesSubject(
     index_id: number,

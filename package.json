@@ -36,7 +36,8 @@
     "url": "https://github.com/Rewrite0/bangumi-api"
   },
   "scripts": {
-    "build": "vite build"
+    "build": "vite build",
+    "push": "pnpm build && pnpm publish"
   },
   "devDependencies": {
     "vite": "^4.1.0",
