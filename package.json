@@ -1,6 +1,6 @@
 {
   "name": "bangumi-api-ts",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "license": "MIT",
   "type": "module",
   "description": "用typescript包装的Bangumi REST API.",
