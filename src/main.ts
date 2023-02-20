@@ -18,7 +18,7 @@ export * from './types';
 
 export class BangumiApi {
   private static URL = 'https://api.bgm.tv';
-  private static VERSION = '1.0.2';
+  private static VERSION = '1.0.4';
   private static UserAgent = `Rewrite0/BangumiApi/${BangumiApi.VERSION} (https://github.com/Rewrite0/BangumiApi)`;
 
   private AccessToken: string;
@@ -27,9 +27,11 @@ export class BangumiApi {
   /**
    * 初始化axios实例
    * @param opts 配置项
-   * @param opts.AccessToken AccessToken - https://next.bgm.tv/demo/access-token
    */
-  constructor(opts?: { AccessToken?: string }) {
+  constructor(opts?: {
+    /** 可在 https://next.bgm.tv/demo/access-token 生成 */
+    AccessToken?: string;
+  }) {
     this.AccessToken = opts?.AccessToken ?? '';
 
     let headers: { 'User-Agent': string; Authorization?: string } = {
@@ -54,11 +56,7 @@ export class BangumiApi {
   /**
    * 条目搜索
    * @param keywords 关键词
-   * @param params 参数
-   * @param params.type 条目类型 - 1, 2, 3, 4, 6
-   * @param params.responseGroup 返回数据大小, small, medium, large, 默认 small
-   * @param params.start 开始条数
-   * @param params.max_resulte 每页最多条数, 最大25
+   * @param params 参数 type, responseGroup, start, max_resulte
    */
   search(keywords: string, params?: SearchParams) {
     const url = encodeURI(`/search/subject/${keywords}`);
@@ -71,8 +69,6 @@ export class BangumiApi {
    * 实验性条目搜索
    * @param keyword 关键词
    * @param params 参数 sort, filter
-   * @param params.sort 排序 'match' | 'heat' | 'rank' | 'score'
-   * @param params.filter type, tag, air_date, rating, rank, nsfw
    */
   experimentalSearch(keyword: string, params?: ExperimentalSearchParams) {
     return this.axios.post('/v0/search/subjects', {
@@ -129,12 +125,9 @@ export class BangumiApi {
   /**
    * get episodes
    * @param subject_id 条目id
-   * @param params 参数
-   * @param params.type 章节类型 - 0, 1, 2, 3, 4, 5, 6
-   * @param params.limit limit default: 100
-   * @param params.offset offset default: 0
+   * @param  params 参数 type, limit, offset
    */
-  getEpisodes(subject_id: number, params?: GetEpisodesParams) {
+  getEpisodes(subject_id: number, params: GetEpisodesParams) {
     return this.axios.get('/v0/episodes', {
       params: {
         subject_id,
@@ -257,11 +250,7 @@ export class BangumiApi {
   /**
    * 获取对应用户的收藏，查看私有收藏需要access token
    * @param username 用户名或UID, 设置了用户名之后无法使用 UID
-   * @param params 参数
-   * @param params.subject_type 条目类型 -  1, 2, 3, 4, 6
-   * @param params.type 收藏类型 -  1, 2, 3, 4, 5
-   * @param params.limit default 30
-   * @param params.offset default 0
+   * @param params 参数 subject_type, type, limit, offset
    */
   getUserCollections(username: string, params: GetUserCollectionsParams) {
     return this.axios.get(`/v0/users/${username}/collections`, {
@@ -283,14 +272,7 @@ export class BangumiApi {
    * @description 由于直接修改剧集条目的完成度可能会引起意料之外效果，只能用于修改书籍类条目的完成度。
    * PATCH 方法的所有请求体字段均可选
    * @param subject_id 条目id
-   * @param params 参数
-   * @param params.type 条目收藏类型 1, 2, 3, 4, 5
-   * @param params.rate 评分，0 表示删除评分
-   * @param params.ep_status 只能用于修改书籍条目进度
-   * @param params.vol_status 只能用于修改书籍条目进度
-   * @param params.comment 评价
-   * @param params.private 仅自己可见
-   * @param params.tags 不传或者 null 都会被忽略，传 [] 则会删除所有 tag
+   * @param params 参数 type, rate, ep_status, vol_status, comment, private, tags
    */
   patchUserCollectionSubject(subject_id: number, params?: PatchUserCollectionParams) {
     return this.axios.patch(`/v0/users/-/collections/${subject_id}`, params);
@@ -299,10 +281,7 @@ export class BangumiApi {
   /**
    * 获取指定收藏条目的章节信息
    * @param subject_id 条目id
-   * @param params 参数
-   * @param params.episode_type 章节类型 不传则不按照章节进行筛选 - 0, 1, 2, 3, 4, 5, 6
-   * @param params.offset offset default: 0
-   * @param params.limit limit default: 100
+   * @param params 参数 episode_type, offset, limit
    */
   getUserCollectionsSubjectEpisodes(
     subject_id: number,
@@ -317,9 +296,7 @@ export class BangumiApi {
    * 修改指定收藏条目的章节信息
    * @description 同时会重新计算条目的完成度, 暂时不能生成时间线
    * @param subject_id 条目id
-   * @param params 参数
-   * @param params.episode_id 章节id数组
-   * @param params.type 0, 1, 2, 3
+   * @param params 参数 episode_id, type
    */
   patchUserCollectionsSubjectEpisodes(
     subject_id: number,
@@ -350,9 +327,7 @@ export class BangumiApi {
   /**
    * 获取指定人物编辑历史
    * @param person_id 人物id
-   * @param params 参数
-   * @param params.limit limit default 30
-   * @param params.offset offset default 0
+   * @param params 参数 limit, offset
    */
   getRevisionsPersons(
     person_id: number,
@@ -380,9 +355,7 @@ export class BangumiApi {
   /**
    * 获取指定角色编辑历史
    * @param character_id 角色id
-   * @param params 参数
-   * @param params.limit limit default 30
-   * @param params.offset offset default 0
+   * @param params 参数 limit, offset
    */
   getRevisionsCharacters(
     character_id: number,
@@ -410,9 +383,7 @@ export class BangumiApi {
   /**
    * 获取指定条目编辑历史
    * @param subject_id 条目id
-   * @param params 参数
-   * @param params.limit limit default 30
-   * @param params.offset offset default 0
+   * @param params 参数 limit, offset
    */
   getRevisionsSubjects(
     subject_id: number,
@@ -440,9 +411,7 @@ export class BangumiApi {
   /**
    * 获取指定章节编辑历史
    * @param episode_id  章节id
-   * @param params 参数
-   * @param params.limit limit default 30
-   * @param params.offset offset default 0
+   * @param params 参数 limit, offset
    */
   getRevisionsEpisodes(
     episode_id: number,
@@ -485,9 +454,7 @@ export class BangumiApi {
   /**
    * 编辑目录信息
    * @param index_id 目录id
-   * @param params 参数
-   * @param params.title title
-   * @param params.description description
+   * @param params 参数 title, description
    */
   putIndices(
     index_id: number,
@@ -502,16 +469,20 @@ export class BangumiApi {
   /**
    * 获取目录中的条目
    * @param index_id 目录id
-   * @param params 参数
-   * @param params.type 条目类型 - 1, 2, 3, 4, 6
-   * @param params.limit limit default 30
-   * @param params.offset offset default 0
+   * @param params 参数 type, limit, offset
    */
   getIndicesSubject(
     index_id: number,
     params?: {
+      /**
+       * 条目类型
+       * @description
+       * 1: 书籍 2: 动画 3: 音乐 4: 游戏 6: 三次元
+       * */
       type?: SubjectType;
+      /** limit default 30 */
       limit?: number;
+      /** offset default 0 */
       offset?: number;
     }
   ) {
@@ -524,15 +495,15 @@ export class BangumiApi {
    * 添加条目到目录
    * @param index_id 目录id
    * @param subject_id 条目id
-   * @param params 参数
-   * @param params.sort 排序条件，越小越靠前
-   * @param params.comment 评论
+   * @param params 参数 sort, comment
    */
   addIndicesSubject(
     index_id: number,
     subject_id: number,
     params?: {
+      /** 排序条件，越小越靠前 */
       sort?: number;
+      /** 评论 */
       comment?: string;
     }
   ) {
@@ -547,16 +518,16 @@ export class BangumiApi {
    * @description 如果条目不存在于目录，会创建该条目
    * @param index_id 目录id
    * @param subject_id 条目id
-   * @param params 参数
-   * @param params.sort 排序条件，越小越靠前
-   * @param params.comment 评论
+   * @param params 参数 sort, comment
    */
   putIndicesSubject(
     index_id: number,
     subject_id: number,
     params?: {
+      /** 排序条件，越小越靠前 */
       sort?: number;
-      comment?: number;
+      /** 评论 */
+      comment?: string;
     }
   ) {
     return this.axios.put(`/v0/indices/${index_id}/subjects/${subject_id}`, params);
