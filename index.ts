@@ -36,7 +36,7 @@ export type SubjectImageType = 'small' | 'grid' | 'large' | 'medium' | 'common';
 
 export class BangumiApi {
   private static URL = 'https://api.bgm.tv';
-  private static VERSION = '1.0.4';
+  private static VERSION = '2.0.0';
   private static UserAgent = `Rewrite0/BangumiApi/${BangumiApi.VERSION} (https://github.com/Rewrite0/BangumiApi)`;
 
   private AccessToken: string;
