@@ -9,9 +9,10 @@ export default defineConfig(({ command }) => {
         external: ['axios'],
       },
       lib: {
-        entry: './src/main.ts',
+        entry: './index.ts',
         name: 'bangumi-api',
         fileName: 'index',
+        formats: ['es'],
       },
     },
   };
