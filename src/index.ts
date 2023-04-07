@@ -37,15 +37,17 @@ export class BangumiApi {
   }
 
   /** 每日放送 */
-  calendar() {
-    return this.axios.get<BGMSubject.Calendar>('/calendar');
+  async calendar() {
+    const { data } = await this.axios.get<BGMSubject.Calendar>('/calendar');
+    return data;
   }
 
   /**
    * 返回当前 Access Token 对应的用户信息
    */
-  getMe() {
-    return this.axios.get<BGMUser.Me>('/v0/me');
+  async getMe() {
+    const { data } = await this.axios.get<BGMUser.Me>('/v0/me');
+    return data;
   }
 
   /**
