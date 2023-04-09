@@ -3,14 +3,18 @@ import dts from 'vite-plugin-dts';
 
 export default defineConfig(({ command }) => {
   const config: UserConfigExport = {
-    plugins: [dts()],
+    plugins: [
+      dts({
+        rollupTypes: true,
+      }),
+    ],
     build: {
       rollupOptions: {
         external: ['axios'],
       },
       lib: {
-        entry: './index.ts',
-        name: 'bangumi-api',
+        entry: './src/index.ts',
+        name: 'BangumiApi',
         fileName: 'index',
         formats: ['es'],
       },

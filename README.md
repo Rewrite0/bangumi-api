@@ -13,7 +13,19 @@ npm i bangumi-api-ts
 ```typescript
 import { BangumiApi } from 'bangumi-api-ts';
 
-const bgm = new BangumiApi({
+const {
+  calendar, // 每日放送
+  characters, // 角色
+  collections, // 收藏
+  episodes, // 章节
+  getMe, // 当前 Access Token 对应的用户信息
+  indices, // 目录
+  persons, // 人物
+  revisions, // 编辑历史
+  search, // 搜索
+  subjects, // 条目
+  users, // 用户
+} = new BangumiApi({
   AccessToken: '/* Your AccessToken */',
 });
 ```

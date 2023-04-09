@@ -17,10 +17,10 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "skipLibCheck": true,
-    "baseUrl": "./"
+    "baseUrl": "./",
   },
   "include": [
-    "index.ts"
+    "src/**/*"
   ],
   "exclude": [
     "node_modules"
