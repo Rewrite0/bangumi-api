@@ -1,14 +1,23 @@
 import type { AxiosInstance } from 'axios';
 import type { BGMEpisode, BGMEpisodeParams, Query } from 'bgm-types';
 
-export function useEpisodes(axios: AxiosInstance) {
+export type EpisodesFunctions = {
+  /**
+   * get episodes
+   * @param params 参数 subject_id, type, limit, offset
+   */
+  get: (params: Query<BGMEpisodeParams.Episodes>) => Promise<BGMEpisode.Episodes>;
+  /**
+   * get episode
+   * @param episode_id episode id
+   */
+  episode: (episode_id: number) => Promise<BGMEpisode.EpisodeItem>;
+};
+
+export function useEpisodes(axios: AxiosInstance): EpisodesFunctions {
   const prefix = '/v0/episodes';
 
   return {
-    /**
-     * get episodes
-     * @param params 参数 subject_id, type, limit, offset
-     */
     get: async (params: Query<BGMEpisodeParams.Episodes>) => {
       const { data } = await axios.get<BGMEpisode.Episodes>(`${prefix}`, {
         params,
@@ -16,10 +25,6 @@ export function useEpisodes(axios: AxiosInstance) {
       return data;
     },
 
-    /**
-     * get episode
-     * @param episode_id episode id
-     */
     episode: async (episode_id: number) => {
       const { data } = await axios.get<BGMEpisode.EpisodeItem>(
         `/v0/episodes/${episode_id}`

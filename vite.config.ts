@@ -14,7 +14,7 @@ export default defineConfig(({ command }) => {
       },
       lib: {
         entry: './src/index.ts',
-        name: 'bangumi-api',
+        name: 'BangumiApi',
         fileName: 'index',
         formats: ['es'],
       },
