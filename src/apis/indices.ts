@@ -44,15 +44,15 @@ export type IndicesFunctions = {
    */
   deleteSubject: (
     subject_id: BGMIndicesParams.DeleteSubject['path']['subject_id']
-  ) => Promise<unknown>;
+  ) => Promise<BGMIndices.DeleteSubject>;
   /**
    * 为当前用户收藏一条目录
    */
-  collect: () => Promise<unknown>;
+  collect: () => Promise<BGMIndices.Collect>;
   /**
    * 为当前用户收藏一条目录
    */
-  deleteCollect: () => Promise<unknown>;
+  deleteCollect: () => Promise<BGMIndices.DeleteCollect>;
 };
 
 const prefix = '/v0/indices';
@@ -106,12 +106,16 @@ export function useIndices(
     },
 
     collect: async () => {
-      const { data } = await axios.post(`${prefix}/${index_id}/collect`);
+      const { data } = await axios.post<BGMIndices.Collect>(
+        `${prefix}/${index_id}/collect`
+      );
       return data;
     },
 
     deleteCollect: async () => {
-      const { data } = await axios.delete(`${prefix}/${index_id}/collect`);
+      const { data } = await axios.delete<BGMIndices.DeleteCollect>(
+        `${prefix}/${index_id}/collect`
+      );
       return data;
     },
   };
