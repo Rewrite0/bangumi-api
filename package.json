@@ -22,13 +22,14 @@
     "email": "y747556795@gmail.com"
   },
   "type": "module",
+  "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "vite build",
+    "build": "rollup --config rollup.config.ts --configPlugin typescript",
     "push": "pnpm build && pnpm publish"
   },
   "dependencies": {
@@ -36,8 +37,11 @@
     "bgm-types": "^3.1.1"
   },
   "devDependencies": {
+    "@rollup/plugin-terser": "^0.4.1",
+    "@rollup/plugin-typescript": "^11.1.0",
     "@types/node": "^18.15.11",
-    "vite": "^4.2.1",
-    "vite-plugin-dts": "^1.7.3"
+    "rollup": "^3.20.3",
+    "rollup-plugin-dts": "^5.3.0",
+    "tslib": "^2.5.0"
   }
 }

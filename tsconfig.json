@@ -18,6 +18,7 @@
     "noImplicitReturns": true,
     "skipLibCheck": true,
     "baseUrl": "./",
+    "outDir": "./dist",
   },
   "include": [
     "src/**/*"
