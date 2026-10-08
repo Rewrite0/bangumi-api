@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
-    "target": "ES5",
+    "target": "ES6",
     "useDefineForClassFields": true,
     "module": "ES6",
     "lib": [
       "ES6",
       "DOM",
     ],
-    "moduleResolution": "Node",
+    "moduleResolution": "bundler",
     "strict": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -19,6 +19,11 @@
     "skipLibCheck": true,
     "baseUrl": "./",
     "outDir": "./dist",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
   },
   "include": [
     "src/**/*"
